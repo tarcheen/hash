@@ -1,3 +1,8 @@
+/*
+Hamed Mirlohi
+Implementing Hash Table
+
+*/
 
 #include <iostream>
 
@@ -5,80 +10,85 @@ using namespace std;
 
 struct node
 {
-    string name = "Blank";
-    string phone = "Blank";
-    node* next = nullptr;
+	string name = "Blank";
+	string phone = "Blank";
+	node* next = nullptr;
 };
 
 class HashHamed
 {
-    int size;
-    node* Node;
-    
+	int size;
+	node* Node;
+
 public:
-    HashHamed(int length)
-    {
-        this->size = length;
-        Node = new node[size];
-    }
-    
-    void chainNode(int index, string name, string phone)
-    {
-        node* temp = this->Node[index].next;
-        while(temp->next != nullptr)
-        {
-            temp = temp->next;
-        }
-        // at this point we are at the tail of the chain
-        temp->next = new node;
-        temp->next->name = name;
-        temp->next->phone = phone;
-        temp->next->next = nullptr;
-    }
-    
-    void insert_data(string name, string phone)
-    {
-        int index = runHash(name);
-        if(this->Node[index].name != "Blank")
-        {
-            cout<<"Collision"<<endl;
-            chainNode(index, name, phone);
-        }
-        else
-            Node[index].name = name;
-            Node[index].phone = phone;
-    }
-    
-    int runHash(string name)
-    {
-        return (int)name.length();
-    }
-    
-    void display_hash()
-    {
-        for(int i = 0; i < size; i++)
-        {
-            cout<<i<<": ";
-            cout<<Node[i].name<<" "<<Node[i].phone<<endl;
-            while (Node[i].next != nullptr)
-            {
-                cout<<"     "<<Node[i].next->name<< " ";
-                cout<<Node[i].next->phone<<endl;
-                Node[i].next = Node[i].next->next;
-            }
-            
-        }
-    }
+	HashHamed(int length)
+	{
+		this->size = length;
+		Node = new node[size];
+	}
+
+	void chainNode(int index, string name, string phone)
+	{
+		node* temp1 = Node[index].next;		// points to next pointer of the node
+		node* temp2 = &Node[index];			// points to the node
+		while (temp1 != nullptr)			// while we are not at the end of the nodes			
+		{
+			temp2 = temp1;	
+			temp1 = temp1->next;
+		}
+		// we are at the tail now
+		temp1 = new node;					// create new node
+		temp1->name = name;					// fill all fields
+		temp1->phone = phone;
+		temp1->next = nullptr;
+		temp2->next = temp1;				// connect last node to the newly build node
+	}
+
+	void insert_data(string name, string phone)
+	{
+		int index = runHash(name);
+		if (this->Node[index].name != "Blank")
+		{
+			cout << "Collision Occured" << endl;
+			chainNode(index, name, phone);
+		}
+		else
+		{
+			Node[index].name = name;
+			Node[index].phone = phone;
+		}
+	}
+
+	int runHash(string name)
+	{
+		return (int)name.length();
+	}
+
+	void display_hash()
+	{
+		for (int i = 0; i < size; i++)
+		{
+			cout << i << ": ";
+			cout << Node[i].name.c_str() << " " << Node[i].phone.c_str() << endl;
+			while (Node[i].next != nullptr)
+			{
+				cout << "     " << Node[i].next->name.c_str() << " ";
+				cout << Node[i].next->phone.c_str() << endl;
+				Node[i].next = Node[i].next->next;
+			}
+
+		}
+	}
 };
 
 int main(int argc, const char * argv[])
 {
-    cout<<"hello world"<<endl;
-    
-    HashHamed h1(10);
-    h1.insert_data("Hamed", "503");
-    h1.insert_data("Shaya", "347");
-    h1.insert_data("Sarah", "830");
-    h1.display_hash();
-    
+	HashHamed h1(10);
+	h1.insert_data("Hamed", "503");
+	h1.insert_data("Shayan", "347");
+	h1.insert_data("Sarah", "830");
+	h1.insert_data("Marga", "+63");
+	h1.insert_data("abi", "+98913");
+	h1.display_hash();
+
 }
