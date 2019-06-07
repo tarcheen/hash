@@ -1,17 +1,11 @@
-/*
-Hamed Mirlohi
-Implementing Hash Table
-
-*/
-
 #include <iostream>
 
 using namespace std;
 
 struct node
 {
-	string name = "Blank";
-	string phone = "Blank";
+	string name = "";
+	string phone = "";
 	node* next = nullptr;
 };
 
@@ -21,13 +15,13 @@ class HashHamed
 	node* Node;
 
 public:
-	HashHamed(int length)
+	HashHamed(const int length)
 	{
 		this->size = length;
 		Node = new node[size];
 	}
 
-	void chainNode(int index, string name, string phone)
+	void chainNode(const int index, const string name, const string phone)
 	{
 		node* temp1 = Node[index].next;		// points to next pointer of the node
 		node* temp2 = &Node[index];			// points to the node
@@ -47,19 +41,19 @@ public:
 	void insert_data(string name, string phone)
 	{
 		int index = runHash(name);
-		if (this->Node[index].name != "Blank")
+		if (this->Node[index].name != "")
 		{
-			cout << "Collision Occured" << endl;
 			chainNode(index, name, phone);
 		}
 		else
 		{
-			Node[index].name = name;
-			Node[index].phone = phone;
+			this->Node[index].name = name;
+			this->Node[index].phone = phone;
 		}
 	}
 
-	int runHash(string name)
+	// simple hash algorithm
+	int runHash(const string name)
 	{
 		return (int)name.length();
 	}
@@ -83,12 +77,16 @@ public:
 
 int main(int argc, const char * argv[])
 {
+
 	HashHamed h1(10);
 	h1.insert_data("Hamed", "503");
 	h1.insert_data("Shayan", "347");
 	h1.insert_data("Sarah", "830");
 	h1.insert_data("Marga", "+63");
 	h1.insert_data("abi", "+98913");
+	h1.insert_data("Rami", "971");
+	h1.insert_data("Mike", "5037844423");
+
 	h1.display_hash();
 
 }
